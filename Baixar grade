@@ -1,0 +1,491 @@
+<style>
+  #grade{ scroll-margin-top: calc(var(--header-height) + 10px); }
+
+  .fbtc-offer{
+    font-family:"Roboto", sans-serif;
+    background: #d1d1d1; /* Cor Gelo */
+    padding: 78px 0;
+
+    /* --- TRUQUE PARA OCUPAR A TELA TODA (FULL WIDTH) --- */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    /* --------------------------------------------------- */
+  }
+  
+  .fbtc-offer__wrap{
+    width:100%;
+    max-width: var(--max-width); /* Mantém o conteúdo alinhado no centro */
+    margin: 0 auto;
+    padding: 0 20px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items:center;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+  }
+
+  .fbtc-offer__title{
+    margin:0 0 12px 0;
+    color: var(--grafite);
+    font-size: 34px;
+    line-height:1.1;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+  }
+  .fbtc-offer__sub{
+    margin:0 0 16px 0;
+    color: rgba(36,56,74,.86);
+    font-size:16px;
+    line-height:1.55;
+    font-weight: 500;
+  }
+
+  .fbtc-checklist{
+    margin: 18px 0 16px 0;
+    padding:0;
+    list-style:none;
+    display:grid;
+    gap: 10px;
+  }
+  .fbtc-checklist li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    color: rgba(36,56,74,.92);
+    font-size:14px;
+    line-height:1.45;
+    font-weight: 600;
+  }
+  
+  .fbtc-badge{
+    width: 22px; height: 22px;
+    border-radius: 8px;
+    background: #ffffff; 
+    border: 1px solid rgba(46,112,240,.18);
+    display:flex; align-items:center; justify-content:center;
+    flex: 0 0 22px;
+  }
+  .fbtc-badge svg{ width: 14px; height: 14px; fill: var(--azul); }
+
+  /* BOX ROI (Fundo Branco para contraste) */
+  .fbtc-roi{
+    margin-top: 14px;
+    padding: 14px 14px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(164,186,200,.55);
+    color: rgba(36,56,74,.92);
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  }
+
+  .fbtc-offer__cta{
+    margin-top: 18px;
+    display:flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .fbtc-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-decoration:none;
+    font-weight: 900;
+    font-size: 15px;
+    border: 0;
+    cursor:pointer;
+    box-shadow: 0 14px 34px rgba(0,0,0,.12);
+    transition: transform .15s ease, filter .15s ease;
+    white-space: nowrap;
+  }
+  .fbtc-btn--primary{
+    background: var(--amarelo-destaque);
+    color: #0a1a2a;
+  }
+  .fbtc-btn--primary:hover{ transform: translateY(-1px); filter: brightness(.98); }
+
+  /* MOCKUP (Fundo Branco) */
+  .fbtc-mock{
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(164,186,200,.55);
+    background: #ffffff;
+    min-height: 360px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: rgba(36,56,74,.75);
+    font-weight: 700;
+    text-align:center;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  @media (max-width: 900px){
+    .fbtc-offer__wrap{ grid-template-columns: 1fr; }
+    .fbtc-offer__title{ font-size: 28px; }
+  }
+
+  /* MODAL */
+  .fbtc-modal{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index: 10000; 
+    padding: 18px;
+  }
+  .fbtc-modal.is-open{ display:flex; }
+
+  .fbtc-modal__card{
+    width: min(560px, 100%);
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgba(0,0,0,.25);
+    overflow:hidden;
+    border: 1px solid rgba(164,186,200,.55);
+    font-family:"Roboto", sans-serif;
+  }
+  .fbtc-modal__head{
+    padding: 16px 16px;
+    background: #deece7;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 12px;
+  }
+  .fbtc-modal__head h3{
+    margin:0;
+    color: var(--grafite);
+    font-size: 18px;
+    line-height:1.1;
+    font-weight: 900;
+  }
+  .fbtc-modal__head p{
+    margin: 6px 0 0 0;
+    color: rgba(36,56,74,.82);
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+  .fbtc-modal__close{
+    border:0;
+    background: transparent;
+    cursor:pointer;
+    font-size: 22px;
+    line-height: 1;
+    color: rgba(36,56,74,.65);
+    padding: 0 6px;
+  }
+
+  .fbtc-modal__body{ padding: 16px; }
+
+  .fbtc-field{ display:grid; gap:6px; margin-bottom: 12px; }
+  .fbtc-label{ font-size: 13px; font-weight: 700; color: rgba(36,56,74,.85); }
+  .fbtc-input, .fbtc-select{
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(164,186,200,.65);
+    background: #ffffff;
+    color: rgba(36,56,74,.95);
+    padding: 12px 12px;
+    outline: none;
+    font-size: 14px;
+  }
+  .fbtc-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px){ .fbtc-row{ grid-template-columns: 1fr; } }
+
+  .fbtc-consent{
+    display:flex; gap:10px; align-items:flex-start;
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(36,56,74,.75);
+    line-height: 1.35;
+    font-weight: 600;
+  }
+  .fbtc-consent input{ margin-top:2px; accent-color: var(--amarelo-destaque); }
+
+  .fbtc-submit{
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 14px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--amarelo-destaque);
+    color: #0a1a2a;
+    font-weight: 900;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .fbtc-submit:hover{ transform: translateY(-1px); filter: brightness(.98); }
+
+  .fbtc-status{
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(36,56,74,.8);
+    min-height: 16px;
+    text-align:center;
+  }
+  /* ✅ Anti-overflow (mobile) */
+.fbtc-offer{
+  left: auto;
+  right: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  overflow-x: clip; /* evita scroll horizontal */
+}
+
+/* ✅ Botão não pode ser nowrap com texto grande */
+.fbtc-btn{
+  white-space: normal;         /* deixa quebrar linha */
+  text-align: center;
+  line-height: 1.15;
+}
+
+/* ✅ CTA em coluna no mobile + botões 100% */
+@media (max-width: 520px){
+  .fbtc-offer__cta{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .fbtc-btn{
+    width: 100%;
+  }
+  .fbtc-mock{
+    min-height: 260px; /* menos “vazio” no mobile */
+  }
+  .fbtc-offer__wrap{
+    padding: 0 16px; /* respiro melhor */
+  }
+}
+
+/* ✅ Quando você trocar o mock pelo <img>, ele não estoura */
+.fbtc-mock img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.fbtc-mock code{
+  word-break: break-word;
+}
+</style>
+
+<section class="fbtc-offer" id="grade" aria-label="Baixar Grade Curricular">
+  <div class="fbtc-offer__wrap">
+
+    <div>
+      <h2 class="fbtc-offer__title">O passo a passo para dominar a Terapia Capilar está neste arquivo.</h2>
+      <p class="fbtc-offer__sub">
+        Baixe a Grade Curricular Oficial e descubra como transformamos teoria complexa em aplicação prática e lucrativa.
+      </p>
+
+      <ul class="fbtc-checklist">
+        <li><span class="fbtc-badge"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12 3.4 13.4 9 19l12-12-1.4-1.4z"/></svg></span> Ciência do Fio: Segurança total sem “achismos”.</li>
+        <li><span class="fbtc-badge"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12 3.4 13.4 9 19l12-12-1.4-1.4z"/></svg></span> Avaliação Assertiva: Como usar a tricoscopia para vender a solução exata.</li>
+        <li><span class="fbtc-badge"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12 3.4 13.4 9 19l12-12-1.4-1.4z"/></svg></span> Protocolos Rentáveis: Tratamentos com maior margem de lucro.</li>
+        <li><span class="fbtc-badge"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12 3.4 13.4 9 19l12-12-1.4-1.4z"/></svg></span> Gestão de Carreira: Como precificar sua nova hora técnica.</li>
+      </ul>
+
+      <div class="fbtc-roi">
+        💡 <strong>A Matemática do Sucesso:</strong> não encare como custo, e sim como troca inteligente.
+        Com o lucro de apenas 1 protocolo capilar por mês, você já viabiliza o investimento da sua formação.
+      </div>
+
+      <div class="fbtc-offer__cta">
+        <button class="fbtc-btn fbtc-btn--primary" type="button" id="openGradeModal">
+          📥 BAIXAR GRADE CURRICULAR E VER PLANOS
+        </button>
+      </div>
+    </div>
+
+    <div class="fbtc-mock">
+      (Aqui vai o mockup do PDF)<br>
+      Substitua este texto pela imagem <code>&lt;img src="..."&gt;</code>
+    </div>
+
+  </div>
+</section>
+
+<div class="fbtc-modal" id="gradeModal" aria-hidden="true">
+  <div class="fbtc-modal__card" role="dialog" aria-modal="true" aria-label="Baixar Grade Curricular">
+    <div class="fbtc-modal__head">
+      <div>
+        <h3>Preencha para baixar a Grade Curricular</h3>
+        <p>Você vai receber o arquivo agora e a coordenação pode te orientar sobre a melhor turma.</p>
+      </div>
+      <button class="fbtc-modal__close" type="button" id="closeGradeModal" aria-label="Fechar">×</button>
+    </div>
+
+    <div class="fbtc-modal__body">
+      <form id="gradeLeadForm">
+        <div class="fbtc-field">
+          <label class="fbtc-label" for="g_nome">Nome</label>
+          <input class="fbtc-input" id="g_nome" name="nome" type="text" required placeholder="Seu nome completo">
+        </div>
+
+        <div class="fbtc-row">
+          <div class="fbtc-field">
+            <label class="fbtc-label" for="g_whats">WhatsApp</label>
+            <input class="fbtc-input" id="g_whats" name="whatsapp" type="tel" required placeholder="(00) 00000-0000">
+          </div>
+          <div class="fbtc-field">
+            <label class="fbtc-label" for="g_email">E-mail</label>
+            <input class="fbtc-input" id="g_email" name="email" type="email" required placeholder="seuemail@exemplo.com">
+          </div>
+        </div>
+
+        <div class="fbtc-field">
+          <label class="fbtc-label" for="g_nivel">Nível profissional</label>
+          <select class="fbtc-select" id="g_nivel" name="nivel" required>
+            <option value="" disabled selected>Selecione</option>
+            <option>Iniciante (quero entrar na área)</option>
+            <option>Já atendo no salão</option>
+            <option>Já faço Terapia Capilar e quero evoluir</option>
+            <option>Sou da área da saúde/estética</option>
+          </select>
+        </div>
+
+        <label class="fbtc-consent">
+          <input type="checkbox" name="lgpd" required>
+          Concordo em receber contato com informações do curso e turmas (LGPD).
+        </label>
+
+        <button class="fbtc-submit" type="submit">Enviar e baixar agora</button>
+        <div class="fbtc-status" id="gradeStatus"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- CONFIGURAÇÕES ---
+  // 1. Link do Google Script (O mesmo que usamos no outro form)
+  const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbyeY31pXMQA3_FQIUfedAARDrf7zJfAYg61UztU-hhm2cgleXGDCa3StbHmf-cSxiB8dQ/exec";
+  
+  // 2. Página de Obrigado (Para onde o usuário vai após enviar)
+  // Adicionamos ?tipo=grade no final
+const THANK_YOU_URL = "https://formacaoterapiacapilar.com.br/obrigado-sp-santos-corallo/?tipo=grade";
+  
+  // 3. (OPCIONAL) Link direto do PDF caso queira forçar abertura imediata
+  // Mas recomendo colocar o botão de download LÁ na página de obrigado.
+  const GRADE_PDF_URL = ""; 
+
+  // --- LÓGICA DO MODAL (ABRIR/FECHAR) ---
+  const modal = document.getElementById("gradeModal");
+  const openBtn = document.getElementById("openGradeModal"); // Botão na seção cinza
+  const closeBtn = document.getElementById("closeGradeModal"); // O "X" do modal
+
+  // Função para abrir
+  function abrirModalGrade(e) {
+    if(e) e.preventDefault();
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden","false");
+    // Trava a rolagem da página de fundo
+    document.body.style.overflow = "hidden";
+  }
+
+  // Função para fechar
+  function fecharModalGrade() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+  }
+
+  // Eventos de Clique
+  if(openBtn) openBtn.addEventListener("click", abrirModalGrade);
+  if(closeBtn) closeBtn.addEventListener("click", fecharModalGrade);
+
+  // Fecha ao clicar fora (no fundo escuro) ou apertar ESC
+  if(modal){
+    modal.addEventListener("click", (e)=>{ 
+      if(e.target === modal) fecharModalGrade(); 
+    });
+    document.addEventListener("keydown", (e)=>{ 
+      if(e.key === "Escape") fecharModalGrade(); 
+    });
+  }
+
+  // --- MÁSCARA WHATSAPP ---
+  const inputWhats = document.getElementById("g_whats");
+  if(inputWhats) {
+    inputWhats.addEventListener("input", function(e){
+      let v = e.target.value.replace(/\D/g,"");
+      v = v.replace(/^(\d{2})(\d)/g,"($1) $2");
+      v = v.replace(/(\d)(\d{4})$/,"$1-$2");
+      e.target.value = v.slice(0, 15); // Limita tamanho
+    });
+  }
+
+  // --- ENVIO DO FORMULÁRIO ---
+  const formGrade = document.getElementById("gradeLeadForm");
+  
+  if(formGrade){
+    formGrade.addEventListener("submit", function(e){
+      e.preventDefault();
+      
+      const btnSubmit = formGrade.querySelector('button[type="submit"]');
+      const statusDiv = document.getElementById("gradeStatus");
+      const textoOriginal = btnSubmit.innerText;
+
+      // 1. Muda estado do botão
+      btnSubmit.innerText = "ENVIANDO...";
+      btnSubmit.disabled = true;
+      statusDiv.textContent = "Aguarde, processando...";
+
+      // 2. Coleta dados
+      const formData = new FormData(formGrade);
+      // Adiciona UTMs se existirem na URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+      
+      data.utm_source = urlParams.get('utm_source') || "";
+      data.utm_medium = urlParams.get('utm_medium') || "";
+      data.utm_campaign = urlParams.get('utm_campaign') || "";
+      data.page_slug = "Landing_Page_Corallo";
+      data.origem_formulario = "Baixar_Grade_Modal"; // Para saber qual form converteu
+
+      // 3. Envia para o Google Sheets
+      fetch(APPS_SCRIPT_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        // SUCESSO!
+        statusDiv.textContent = "Sucesso! Redirecionando...";
+        
+        // (Opcional) Se tiver link do PDF preenchido lá em cima, tenta abrir
+        if(GRADE_PDF_URL) {
+           window.open(GRADE_PDF_URL, '_blank');
+        }
+
+        // REDIRECIONA PARA OBRIGADO
+        setTimeout(() => {
+            window.location.href = THANK_YOU_URL;
+        }, 500); // Pequeno delay de 0.5s para garantir
+      })
+      .catch(err => {
+        console.error(err);
+        statusDiv.textContent = "Erro ao enviar. Tente novamente.";
+        btnSubmit.innerText = textoOriginal;
+        btnSubmit.disabled = false;
+      });
+    });
+  }
+</script>
