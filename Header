@@ -1,0 +1,207 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --azul-header: #0089e2;
+    --amarelo-header: #fecb00;
+    --branco: #ffffff;
+    --texto-btn: #000000;
+
+    --header-height: 80px;
+    --max-width: 1180px;
+  }
+
+  body {
+    margin: 0;
+    padding-top: var(--header-height);
+    font-family: "Roboto", sans-serif;
+  }
+
+  /* HEADER FIXO */
+  .fbtc-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--azul-header);
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+  }
+
+  /* FAIXA AMARELA COM DEGRADÊ (só no header) */
+  .fbtc-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+      rgba(254, 203, 0, 0) 0%,
+      rgba(254, 203, 0, 0.35) 18%,
+      rgba(254, 203, 0, 1) 50%,
+      rgba(254, 203, 0, 0.35) 82%,
+      rgba(254, 203, 0, 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  .fbtc-container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .fbtc-logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s;
+  }
+  .fbtc-logo:hover img { transform: scale(1.05); }
+
+  /* NAV DESKTOP */
+  .fbtc-nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .fbtc-nav a {
+    text-decoration: none;
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .fbtc-nav a:hover { color: var(--amarelo-header); }
+
+  /* BOTÃO */
+  .fbtc-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    background-color: var(--amarelo-header);
+    border-radius: 4px;
+    color: var(--texto-btn);
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  .fbtc-cta-btn:hover {
+    background-color: #ffe066;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .fbtc-cta-mobile { display: none; }
+
+  /* MOBILE */
+  .fbtc-menu-toggle { display: none; }
+  .fbtc-menu-icon {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .fbtc-menu-icon span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: var(--branco);
+    border-radius: 3px;
+    transition: 0.3s;
+  }
+
+  @media (max-width: 900px) {
+    .fbtc-menu-icon { display: flex; }
+
+    .fbtc-nav {
+      position: absolute;
+      top: var(--header-height);
+      left: 0;
+      width: 100%;
+      background-color: var(--azul-header);
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+
+      /* fechado de verdade */
+      max-height: 0;
+      padding: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+
+      transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.2s ease;
+      border-bottom: 0 !important; /* remove a faixa extra do mobile */
+    }
+
+    .fbtc-menu-toggle:checked ~ .fbtc-nav {
+      max-height: 420px;
+      padding: 18px 0 22px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .fbtc-menu-toggle:checked ~ .fbtc-menu-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+    .fbtc-menu-toggle:checked ~ .fbtc-menu-icon span:nth-child(2) { opacity: 0; }
+    .fbtc-menu-toggle:checked ~ .fbtc-menu-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+    .fbtc-cta-desktop { display: none; }
+    .fbtc-cta-mobile { display: inline-flex; margin-top: 8px; }
+  }
+</style>
+
+<header class="fbtc-header">
+  <div class="fbtc-container">
+    
+    <a href="#" class="fbtc-logo">
+      <img src="https://formacaoterapiacapilar.com.br/wp-content/uploads/2026/02/Corallo-horizontal.png" alt="Instituto Corallo">
+    </a>
+
+    <input type="checkbox" id="menu-toggle" class="fbtc-menu-toggle">
+    
+    <label for="menu-toggle" class="fbtc-menu-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <nav class="fbtc-nav">
+      <a href="#curso">O Curso</a> 
+      <a href="#modulos">Módulos</a>  
+      <a href="#investimento">Investimento</a> 
+      <a href="#local">Local</a> 
+      
+      <a href="#" class="js-open-modal">Inscrição</a>              
+      
+      <a href="https://wa.me/5513997746343" target="_blank" class="fbtc-cta-btn fbtc-cta-mobile">
+        Falar com Coordenador
+      </a>
+    </nav>
+
+    <a href="#" class="fbtc-cta-btn fbtc-cta-desktop js-open-modal">
+      SAIBA MAIS
+    </a>
+
+  </div>
+</header>
