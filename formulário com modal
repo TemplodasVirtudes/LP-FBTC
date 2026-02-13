@@ -1,0 +1,345 @@
+<style>
+  /* --- ESTILOS GERAIS --- */
+  :root {
+    --azul-fbtc: #082e52;
+    --amarelo-fbtc: #ffcc00;
+    --branco: #ffffff;
+  }
+  
+  /* IMPORTANTE: Previne rolagem lateral indesejada na página toda */
+  body {
+    overflow-x: hidden;
+  }
+   
+  /* O WRAPPER NÃO PODE TER OVERFLOW HIDDEN */
+  #formulario-fbtc-wrapper {
+    position: relative;
+    z-index: 50; 
+    width: 100%;
+    /* overflow: hidden;  <-- REMOVIDO: Isso cortava a largura */
+  }
+
+  /* --- 1. ESTILO DO FORMULÁRIO FIXO (SEÇÃO AZUL) --- */
+.fbtc-section {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--azul-fbtc);
+  padding: 80px 0;
+
+  /* TÉCNICA FULL WIDTH (LARGURA TOTAL) */
+  width: 100vw; 
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  
+  box-sizing: border-box; 
+  
+  background-image: radial-gradient(circle at 80% 20%, rgba(46, 112, 240, 0.15), transparent 40%);
+  border-top: 4px solid var(--amarelo-fbtc);
+}
+
+.fbtc-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+  .fbtc-copy h2 {
+    color: #fff; font-size: 32px; font-weight: 900; margin-bottom: 20px; line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .fbtc-copy p { color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.5; margin-bottom: 30px; }
+  
+  .fbtc-check-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px; }
+  .fbtc-check-list li { display: flex; gap: 15px; color: #fff; align-items: center; font-weight: 500; }
+  .fbtc-icon { width: 24px; height: 24px; background: var(--amarelo-fbtc); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+
+  .fbtc-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+
+  /* --- 2. ESTILO DOS CAMPOS (INPUTS) --- */
+  .fbtc-field { margin-bottom: 15px; }
+  .fbtc-label { display: block; color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
+  
+  .fbtc-input, .fbtc-select {
+    width: 100%; padding: 12px 15px; border-radius: 6px; border: 1px solid #ccc;
+    font-family: "Roboto", sans-serif; font-size: 15px; box-sizing: border-box;
+    background: #fff; color: #333;
+  }
+  .fbtc-input:focus { border-color: var(--amarelo-fbtc); outline: none; box-shadow: 0 0 0 3px rgba(255,204,0,0.3); }
+
+  .fbtc-btn {
+    width: 100%; padding: 16px; border: none; border-radius: 50px;
+    background: var(--amarelo-fbtc); color: #000;
+    font-weight: 900; font-size: 16px; text-transform: uppercase;
+    cursor: pointer; margin-top: 10px; transition: 0.2s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .fbtc-btn:hover { transform: translateY(-2px); background: #ffe066; }
+  .fbtc-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  .fbtc-consent { display: flex; gap: 10px; color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 15px; line-height: 1.3; }
+  .fbtc-consent input { margin-top: 2px; accent-color: var(--amarelo-fbtc); }
+
+  /* --- 3. ESTILO DO MODAL (POPUP) --- */
+  .fbtc-modal {
+    display: none; position: fixed; inset: 0; z-index: 10000;
+    background: rgba(8, 46, 82, 0.9); backdrop-filter: blur(5px);
+    align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .fbtc-modal.is-open { display: flex; opacity: 1; }
+  
+  .fbtc-modal-content {
+    background: #fff; width: 100%; max-width: 500px;
+    padding: 40px 30px; border-radius: 12px; position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    animation: slideUp 0.3s ease;
+  }
+  
+  .fbtc-modal-close {
+    position: absolute; top: 15px; right: 20px; font-size: 30px; 
+    color: #999; cursor: pointer; line-height: 1;
+  }
+  .fbtc-modal-close:hover { color: #000; }
+
+  /* Ajustes do formulário dentro do Modal (Fundo branco) */
+  .fbtc-modal-content .fbtc-label { color: #333; }
+  .fbtc-modal-content h3 { margin: 0 0 10px 0; color: var(--azul-fbtc); font-size: 24px; text-align: center; }
+  .fbtc-modal-content p { text-align: center; color: #666; font-size: 14px; margin-bottom: 25px; }
+  .fbtc-modal-content .fbtc-consent { color: #666; }
+
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  /* Responsivo */
+  @media (max-width: 900px) {
+    .fbtc-wrap { grid-template-columns: 1fr; gap: 30px; }
+    .fbtc-copy { text-align: center; }
+    .fbtc-check-list { align-items: start; max-width: 350px; margin: 0 auto; }
+  }
+</style>
+
+<div id="formulario-fbtc-wrapper">
+  
+  <section class="fbtc-section" id="formulario">
+    <div class="fbtc-wrap">
+      
+      <div class="fbtc-copy">
+        <h2>Quer uma consultoria gratuita?</h2>
+        <p>Preencha os dados ao lado. Nossa coordenação vai analisar seu perfil e te indicar o caminho mais rápido na Terapia Capilar.</p>
+        <ul class="fbtc-check-list">
+          <li><div class="fbtc-icon">✓</div> Atendimento humano via WhatsApp.</li>
+          <li><div class="fbtc-icon">✓</div> Receba a Grade Curricular detalhada.</li>
+          <li><div class="fbtc-icon">✓</div> Consulte vagas para turmas presenciais.</li>
+        </ul>
+      </div>
+
+      <div class="fbtc-card">
+        <form class="fbtc-smart-form" data-origem="Formulario_Fixo">
+          
+          <div class="fbtc-field">
+            <label class="fbtc-label">Nome Completo</label>
+            <input class="fbtc-input" name="nome" type="text" placeholder="Seu nome" required>
+          </div>
+
+          <div class="fbtc-field">
+            <label class="fbtc-label">E-mail (Obrigatório)</label>
+            <input class="fbtc-input" name="email" type="email" placeholder="Seu melhor e-mail" required>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="fbtc-field">
+              <label class="fbtc-label">WhatsApp</label>
+              <input class="fbtc-input mask-whats" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required>
+            </div>
+            <div class="fbtc-field">
+              <label class="fbtc-label">Profissão</label>
+              <select class="fbtc-select" name="profissao" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option>Cabeleireiro(a)</option>
+                <option>Esteticista</option>
+                <option>Área da Saúde</option>
+                <option>Iniciante/Outros</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="fbtc-field">
+            <label class="fbtc-label">Cidade</label>
+            <input class="fbtc-input" name="cidade" type="text" placeholder="Ex: Santos">
+          </div>
+
+          <label class="fbtc-consent">
+            <input type="checkbox" name="consentimento" checked required>
+            <span>Concordo em receber informações sobre o curso.</span>
+          </label>
+
+          <button type="submit" class="fbtc-btn">RECEBER CONTATO</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="fbtc-modal" id="modal-captura">
+    <div class="fbtc-modal-content">
+      <div class="fbtc-modal-close" onclick="fecharModal()">&times;</div>
+      
+      <h3>Baixar Grade Curricular</h3>
+      <p>Preencha para liberar o download imediato e receber o contato da coordenação.</p>
+
+      <form class="fbtc-smart-form" data-origem="Modal_Popup">
+        
+        <div class="fbtc-field">
+          <label class="fbtc-label">Nome</label>
+          <input class="fbtc-input" name="nome" type="text" required>
+        </div>
+
+        <div class="fbtc-field">
+          <label class="fbtc-label">E-mail</label>
+          <input class="fbtc-input" name="email" type="email" required>
+        </div>
+
+        <div class="fbtc-field">
+          <label class="fbtc-label">WhatsApp</label>
+          <input class="fbtc-input mask-whats" name="whatsapp" type="tel" required>
+        </div>
+
+        <div class="fbtc-field">
+          <label class="fbtc-label">Nível Atual</label>
+          <select class="fbtc-select" name="profissao" required>
+            <option value="Iniciante">Sou Iniciante</option>
+            <option value="Cabeleireiro">Já sou Cabeleireiro</option>
+            <option value="Terapeuta">Já sou Terapeuta</option>
+          </select>
+        </div>
+
+        <label class="fbtc-consent">
+          <input type="checkbox" name="consentimento" checked required>
+          <span>Concordo em receber informações.</span>
+        </label>
+
+        <button type="submit" class="fbtc-btn">BAIXAR PDF AGORA</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // URL do seu Google App Script (Deploy "Web App")
+  const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeY31pXMQA3_FQIUfedAARDrf7zJfAYg61UztU-hhm2cgleXGDCa3StbHmf-cSxiB8dQ/exec";
+  
+  // --- AQUI ESTÁ A MUDANÇA ---
+  // Atualizado para a Página de Obrigado (em vez do WhatsApp direto)
+ // Adicionamos ?tipo=contato no final (ou deixe sem nada)
+const THANK_YOU_URL = "https://formacaoterapiacapilar.com.br/obrigado-sp-santos-corallo/?tipo=contato";
+
+  // --- LÓGICA DO MODAL ---
+  const modal = document.getElementById('modal-captura');
+
+  // Função para abrir o modal
+  function abrirModal() {
+    if(modal) modal.classList.add('is-open');
+  }
+  
+  // Função para fechar
+  function fecharModal() {
+    if(modal) modal.classList.remove('is-open');
+  }
+
+  // Fechar ao clicar fora
+  if(modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) fecharModal();
+    });
+  }
+
+  // Conectar botões existentes
+  document.addEventListener('DOMContentLoaded', () => {
+    const triggers = document.querySelectorAll('.js-open-modal');
+    triggers.forEach(btn => btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      abrirModal();
+    }));
+  });
+
+
+  // --- LÓGICA DE ENVIO (FETCH) ---
+  const forms = document.querySelectorAll('.fbtc-smart-form');
+
+  forms.forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Impede recarregamento da página
+
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerText;
+      
+      // Estado de Carregamento
+      btn.innerText = "ENVIANDO...";
+      btn.disabled = true;
+
+      // Coleta dados
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      // Adiciona campos extras
+      data.utm_source = getParam('utm_source');
+      data.utm_medium = getParam('utm_medium');
+      data.utm_campaign = getParam('utm_campaign');
+      data.page_slug = "Landing_Page_Corallo";
+      data.coordenadora = "Equipe Corallo"; 
+      
+      const origem = form.getAttribute('data-origem') || "Desconhecido";
+      data.utm_content = origem; 
+
+      // ENVIO PARA O GOOGLE SHEETS
+      fetch(APP_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        console.log("Enviado com sucesso!");
+        
+        // --- REDIRECIONAMENTO ACONTECE AQUI ---
+        window.location.href = REDIRECT_URL;
+      })
+      .catch(err => {
+        console.error("Erro:", err);
+        alert("Erro ao enviar. Por favor, chame no WhatsApp.");
+        btn.innerText = originalText;
+        btn.disabled = false;
+      });
+    });
+  });
+
+  // --- MÁSCARA WHATSAPP ---
+  const inputsWhats = document.querySelectorAll('.mask-whats');
+  inputsWhats.forEach(input => {
+    input.addEventListener('input', (e) => {
+      var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+      e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+  });
+
+  // Helper para pegar UTMs
+  function getParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name) || "";
+  }
+</script>
